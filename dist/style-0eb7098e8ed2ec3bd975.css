@@ -1,0 +1,13 @@
+#formula {
+  box-sizing: border-box;
+  font-family: monospace;
+  width: 100%;
+}
+
+#err {
+  font-family: monospace;
+  color: red;
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=style-0eb7098e8ed2ec3bd975.css.map*/

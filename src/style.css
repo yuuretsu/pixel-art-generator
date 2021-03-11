@@ -1,0 +1,11 @@
+#formula {
+  box-sizing: border-box;
+  font-family: monospace;
+  width: 100%;
+}
+
+#err {
+  font-family: monospace;
+  color: red;
+  font-weight: bold;
+}
