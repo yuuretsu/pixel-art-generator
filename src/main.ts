@@ -30,23 +30,23 @@ function generate(min: number) {
     } while (result.length < min);
     return result;
 }
-function isBrucketsCorrect(data: string){
+function isBrucketsCorrect(data: string) {
     const warningField = document.getElementById("warning")!;
     let counter = 0;
     let isCorrect = true;
-    for (let i = 0; i < data.length; i++){
-        if (data[i] == "("){
+    for (let i = 0; i < data.length; i++) {
+        if (data[i] == "(") {
             counter++;
-        } else if (data[i] == ")"){
+        } else if (data[i] == ")") {
             counter--;
         }
-        if (counter < 0){
+        if (counter < 0) {
             isCorrect = false;
         }
     }
     console.log(counter);
     isCorrect = isCorrect && (counter == 0);
-    if (!isCorrect){
+    if (!isCorrect) {
         warningField.innerText = " incorrect Bracket Sequences";
         return false;
     } else {
