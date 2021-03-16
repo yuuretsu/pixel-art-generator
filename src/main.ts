@@ -37,7 +37,7 @@ const grammar = createGrammar({
     'func_1': ['sin(#formula#)', 'cos(#formula#)', 'abs(#formula#)'],
     'func_2': ['hypot(#formula#, #formula#)'],
     'number': ['rand()', 'x', 'y', 't'],
-    'operator': ['+', '-', '*', '/', '==', '>', '<'],
+    'operator': ['+', '-', '*', '/', '==', '>', '<', '&', '|', '^', '%'],
 });
 
 onload = () => {
@@ -53,7 +53,7 @@ onload = () => {
     formulaInputNode.oninput = onInputFromula;
     const randomNode = document.querySelector<HTMLButtonElement>('#generate-random')!;
     randomNode.onclick = () => {
-        const randFormula = generate(100);
+        const randFormula = generate(50);
         formulaInputNode.value = randFormula;
         onInputFromula();
     };
