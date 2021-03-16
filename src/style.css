@@ -4,7 +4,7 @@
   width: 100%;
 }
 
-#err {
+#err, #warning {
   font-family: monospace;
   color: red;
   font-weight: bold;

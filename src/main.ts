@@ -30,6 +30,32 @@ function generate(min: number) {
     } while (result.length < min);
     return result;
 }
+function isBrucketsCorrect(data: string){
+    const warningField = document.getElementById("warning")!;
+    let counter = 0;
+    let isCorrect = true;
+    for (let i = 0; i < data.length; i++){
+        if (data[i] == "("){
+            counter++;
+        } else if (data[i] == ")"){
+            counter--;
+        }
+        if (counter < 0){
+            isCorrect = false;
+        }
+    }
+    console.log(counter);
+    isCorrect = isCorrect && (counter == 0);
+    if (!isCorrect){
+        warningField.innerText = " incorrect Bracket Sequences";
+        return false;
+    } else {
+        warningField.innerText = "";
+        return true;
+    }
+
+
+}
 
 const grammar = createGrammar({
     'formula': ['#formula# #operator# #formula#', '#func#', '#number#', '#number#'],
@@ -43,6 +69,9 @@ const grammar = createGrammar({
 onload = () => {
 
     function onInputFromula() {
+
+        if (!isBrucketsCorrect(formulaInputNode.value)) { return };
+
         eval(`formula = (x, y) => ${formulaInputNode.value}`);
         t = 0;
     }
