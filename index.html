@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel-art Generator</title>
+</head>
+
+<body>
+    <canvas id="img"></canvas>
+    <div>
+        <input type="text" id="formula" height="1"
+            value="(hypot(x, y) > sin((x + y + t + rand() * sin(x / 20) * 20) / 10) * 100) + (hypot(x, y) < sin((x + y + t + rand() * sin(y / 30) * 30) / 10) * 100)">
+    </div>
+    <button id="generate-random">randomize</button>
+    <button id="share">share</button>
+    <div>min: <span id="min">0</span></div>
+    <div>max: <span id="max">0</span></div>
+    <div>time: <span id="time">0</span></div>
+    <div><span id="err"></span></div>
+    <p id="warning"></p>
+</body>
+
+</html>
