@@ -30,6 +30,25 @@ function generate(min: number) {
     } while (result.length < min);
     return result;
 }
+
+function encoded(s: string) {
+    s.replace("+", encodeURI("+")).replace("=", encodeURI("=")).replace("&", encodeURI("&")).replace("?", encodeURI("?")).replace("%", encodeURI("%"));
+    return s;
+}
+
+function copyToBuffer() {
+    let formulaInputNode = document
+        .querySelector<HTMLInputElement>('#formula')!;
+    var searchParams = new URLSearchParams(window.location.search);
+    searchParams.delete("formula");
+    searchParams.append("formula",encodeURI(formulaInputNode.value) );
+    navigator.clipboard.writeText(window.location.hostname + (window.location.port.length ? ":" : "") + window.location.port  + window.location.pathname  + "?" +  searchParams.toString()).then(function() {
+        console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+        console.error('Async: Could not copy text: ', err);
+    });
+}
+
 function isBrucketsCorrect(data: string){
     const warningField = document.getElementById("warning")!;
     let counter = 0;
@@ -86,6 +105,8 @@ onload = () => {
         formulaInputNode.value = randFormula;
         onInputFromula();
     };
+    const share = document.querySelector<HTMLButtonElement>('#share')!;
+    share.onclick = copyToBuffer;
     const minOutput = document.querySelector('#min')!;
     const maxOutput = document.querySelector('#max')!;
     const timeOutput = document.querySelector('#time')!;
@@ -102,8 +123,13 @@ onload = () => {
     const pixels = new PixelsData(W, H);
 
     let formula: (x: number, y: number, t: number, i: number) => number;
-
-    eval(`formula = (x, y, t, i) => ${formulaInputNode.value}`);
+    const urlParams = new URLSearchParams(window.location.search );
+    if ( urlParams.has("formula")){
+        formulaInputNode.value = decodeURI(urlParams.get("formula")!);
+        eval(`formula = (x, y, t, i) => ${decodeURI(urlParams.get("formula")!)}`);
+    } else {
+        eval(`formula = (x, y, t, i) => ${formulaInputNode.value}`);
+    }
 
     let t = 0;
     setInterval(() => {
