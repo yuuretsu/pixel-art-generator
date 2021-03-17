@@ -45,10 +45,10 @@ function copyToBuffer() {
         .querySelector<HTMLInputElement>('#formula')!;
     var searchParams = new URLSearchParams(window.location.search);
     searchParams.delete("formula");
-    searchParams.append("formula",encodeURI(formulaInputNode.value) );
-    navigator.clipboard.writeText(window.location.hostname + (window.location.port.length ? ":" : "") + window.location.port  + window.location.pathname  + "?" +  searchParams.toString()).then(function() {
+    searchParams.append("formula", encodeURI(formulaInputNode.value));
+    navigator.clipboard.writeText(window.location.hostname + (window.location.port.length ? ":" : "") + window.location.port + window.location.pathname + "?" + searchParams.toString()).then(function () {
         console.log('Async: Copying to clipboard was successful!');
-    }, function(err) {
+    }, function (err) {
         console.error('Async: Could not copy text: ', err);
     });
 }
@@ -109,7 +109,7 @@ const grammar = createGrammar({
 });
 
 onload = () => {
-  
+
     type Formula = (x: number, y: number, t: number) => number;
 
     function onInputFromula() {
@@ -146,13 +146,13 @@ onload = () => {
     canvas.ctx.imageSmoothingEnabled = false;
 
     const pixels = new PixelsData(W, H);
-    let formula: (x: number, y: number, t: number, i: number) => number;
-    const urlParams = new URLSearchParams(window.location.search );
-    if ( urlParams.has("formula")){
+    let formula: (x: number, y: number, t: number) => number;
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("formula")) {
         formulaInputNode.value = decodeURI(urlParams.get("formula")!);
-        eval(`formula = (x, y, t, i) => ${decodeURI(urlParams.get("formula")!)}`);
+        eval(`formula = (x, y, t) => ${decodeURI(urlParams.get("formula")!)}`);
     } else {
-        eval(`formula = (x, y, t, i) => ${formulaInputNode.value}`);
+        eval(`formula = (x, y, t) => ${formulaInputNode.value}`);
     }
 
     let t = 0;
