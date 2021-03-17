@@ -4,10 +4,10 @@
   width: 100%;
 }
 
-#err {
+#err, #warning {
   font-family: monospace;
   color: red;
   font-weight: bold;
 }
 
-/*# sourceMappingURL=style-6247e4616120bc70c8bb.css.map*/
+/*# sourceMappingURL=style-cf71778f45d82671f02c.css.map*/

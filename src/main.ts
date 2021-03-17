@@ -13,9 +13,12 @@ const asin = Math.asin;
 const cos = Math.cos;
 const acos = Math.acos;
 const tan = Math.tan;
+const tanh = Math.tanh;
 const atan = Math.atan;
 const hypot = Math.hypot;
 const round = Math.round;
+const ceil = Math.ceil;
+const floor = Math.floor;
 const rand = Math.random;
 const abs = Math.abs;
 const sqrt = Math.sqrt;
@@ -26,10 +29,11 @@ const avg = (...args: number[]) => args.reduce((a, b) => a + b) / args.length;
 function generate(min: number) {
     let result: string;
     do {
-        result = grammar.flatten('#formula#');
+        result = grammar.flatten('#initial#');
     } while (result.length < min);
     return result;
 }
+
 
 function encoded(s: string) {
     s.replace("+", encodeURI("+")).replace("=", encodeURI("=")).replace("&", encodeURI("&")).replace("?", encodeURI("?")).replace("%", encodeURI("%"));
@@ -48,24 +52,24 @@ function copyToBuffer() {
         console.error('Async: Could not copy text: ', err);
     });
 }
+function isBrucketsCorrect(data: string) {
 
-function isBrucketsCorrect(data: string){
     const warningField = document.getElementById("warning")!;
     let counter = 0;
     let isCorrect = true;
-    for (let i = 0; i < data.length; i++){
-        if (data[i] == "("){
+    for (let i = 0; i < data.length; i++) {
+        if (data[i] == "(") {
             counter++;
-        } else if (data[i] == ")"){
+        } else if (data[i] == ")") {
             counter--;
         }
-        if (counter < 0){
+        if (counter < 0) {
             isCorrect = false;
         }
     }
     console.log(counter);
     isCorrect = isCorrect && (counter == 0);
-    if (!isCorrect){
+    if (!isCorrect) {
         warningField.innerText = " incorrect Bracket Sequences";
         return false;
     } else {
@@ -77,21 +81,42 @@ function isBrucketsCorrect(data: string){
 }
 
 const grammar = createGrammar({
-    'formula': ['#formula# #operator# #formula#', '#func#', '#number#', '#number#'],
-    'func': ['#func_1#', '#func_2#'],
-    'func_1': ['sin(#formula#)', 'cos(#formula#)', 'abs(#formula#)'],
-    'func_2': ['hypot(#formula#, #formula#)'],
-    'number': ['rand()', 'x', 'y', 't'],
-    'operator': ['+', '-', '*', '/', '==', '>', '<', '&', '|', '^', '%'],
+    'initial': ['#function#', '#number#'],
+    'function': [
+        '#func-1#(#initial#)',
+        '#func-2#(#initial#, #initial#)',
+        '#func-3#(#initial#, #initial#, #initial#)',
+        '#initial# #operand# #initial#',
+        '(#initial#)'
+    ],
+    'func-1': [
+        'sin',
+        'cos',
+        'tan',
+        'tanh',
+        'asin',
+        'acos',
+        'atan',
+        'round',
+        'ceil',
+        'floor',
+        'abs'
+    ],
+    'func-2': ['hypot'],
+    'func-3': ['hypot'],
+    'operand': ['+', '-', '*', '/', '&', '|', '^', '&&', '||', '<<', '>>', '%', '>', '<', '=='],
+    'number': ['x', 'y', 't']
 });
 
 onload = () => {
+  
+    type Formula = (x: number, y: number, t: number) => number;
 
     function onInputFromula() {
 
         if (!isBrucketsCorrect(formulaInputNode.value)) { return };
 
-        eval(`formula = (x, y) => ${formulaInputNode.value}`);
+        formula = eval(`(x, y, t) => ${formulaInputNode.value}`);
         t = 0;
     }
 
@@ -121,7 +146,6 @@ onload = () => {
     canvas.ctx.imageSmoothingEnabled = false;
 
     const pixels = new PixelsData(W, H);
-
     let formula: (x: number, y: number, t: number, i: number) => number;
     const urlParams = new URLSearchParams(window.location.search );
     if ( urlParams.has("formula")){
@@ -144,7 +168,7 @@ onload = () => {
             for (let x = 0; x < W; x++) {
                 results[x] = [];
                 for (let y = 0; y < H; y++) {
-                    const result = formula(x - W / 2, y - H / 2, t, x + y * W);
+                    const result = formula((x - W / 2) || 1, (y - H / 2) || 1, t || 1);
                     results[x][y] = result;
                     min = Math.min(min, result);
                     max = Math.max(max, result);
