@@ -58,9 +58,9 @@ function generateData(
             let result: number;
             try {
                 result = formula(
-                    (x - W / 2) || 1,
-                    (y - H / 2) || 1,
-                    time || 1
+                    (x - W / 2),
+                    (y - H / 2),
+                    time
                 );
             } catch (error) {
                 for (let x2 = x; x2 < width; x2++) {
