@@ -47,9 +47,16 @@
 			"#initial# #operand# #initial#",
 			"(#initial#)",
 		],
-		"func-1": ["sin", "cos", "tan", "tanh", "round", "abs", "avg"],
-		"func-2": ["hypot", "avg", "atan2"],
-		"func-3": ["hypot", "avg"],
+		"func-1": [
+			"Math.sin",
+			"Math.cos",
+			"Math.tan",
+			"Math.tanh",
+			"Math.round",
+			"Math.abs",
+		],
+		"func-2": ["Math.hypot", "Math.atan2"],
+		"func-3": ["Math.hypot"],
 		operand: [
 			"+",
 			"-",
@@ -72,7 +79,7 @@
 	});
 
 	let formula =
-		"(hypot(x, y) > sin((x + y + t + rand() * sin(x / 20) * 20) / 10) * 100) + (hypot(x, y) < sin((x + y + t + rand() * sin(y / 30) * 30) / 10) * 100)";
+		"(Math.hypot(x, y) > Math.sin((x + y + t + Math.random() * Math.sin(x / 20) * 20) / 10) * 100) + (Math.hypot(x, y) < Math.sin((x + y + t + Math.random() * Math.sin(y / 30) * 30) / 10) * 100)";
 
 	let time: number = 0;
 	onMount(() => {
