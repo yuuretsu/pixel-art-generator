@@ -1,9 +1,6 @@
 <script lang="ts">
     import { afterUpdate, onMount } from "svelte";
     import { PixelsData, Rgba } from "./drawing";
-    import { parseScript } from "esprima";
-
-    type Formula = (x: number, y: number, t: number) => number;
 
     type GenerationResult = ReturnType<typeof generateData>;
 
@@ -11,7 +8,7 @@
         width: number,
         height: number,
         time: number,
-        formula: Formula
+        formula: (x: number, y: number, t: number) => number
     ) {
         const resultData: number[][] = [];
         let min = Infinity;
@@ -72,36 +69,8 @@
         return pixels;
     }
 
-    function isValidFormula(formula: string) {
-        let valid = true;
-        try {
-            parseScript(formula);
-        } catch {
-            valid = false;
-        }
-        return formula.length > 0 ? valid : false;
-    }
-
-    function getDrawingFunction(textFormula: string): Formula {
-        Object.getOwnPropertyNames(Math).forEach((key) => {
-            textFormula = textFormula.replaceAll(key, `Math.${key}`);
-        });
-        textFormula = textFormula.replaceAll("Math.Math.", "Math.");
-        return isValidFormula(textFormula)
-            ? eval(`(x, y, t) => {
-            let output = ${textFormula};
-            switch (output) {
-                case Infinity: return Number.MAX_VALUE;
-                case -Infinity: return Number.MIN_VALUE;
-                case NaN: return 0;
-                default: return output;
-            }
-        }`)
-            : (_x, _y, _t) => 0;
-    }
-
     export let size: [number, number];
-    export let textFormula: string;
+    export let drawingFunction: (x: number, y: number, t: number) => number;
     export let time: number;
 
     let canvas: HTMLCanvasElement;
@@ -114,8 +83,7 @@
     });
 
     afterUpdate(() => {
-        const formula = getDrawingFunction(textFormula);
-        const result = generateData(size[0], size[1], time, formula);
+        const result = generateData(size[0], size[1], time, drawingFunction);
         const pixels = dataToImage(normalizeData(result));
         pixels.update();
         ctx.drawImage(pixels.node, 0, 0, canvas.width, canvas.height);
@@ -128,5 +96,6 @@
     canvas {
         border-radius: 5px;
         border: 1px solid #ccc;
+        max-width: 512px;
     }
 </style>

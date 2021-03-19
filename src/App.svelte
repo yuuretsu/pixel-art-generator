@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { createGrammar } from "tracery-grammar";
+	import { generateFormula } from "./formula-randomizer";
 	import FormulaVisualizator from "./FormulaVisualizator/index.svelte";
+	import { formulaToFunction } from "./stringTools";
 
 	function copyToBuffer() {
 		const searchParams = new URLSearchParams(window.location.search);
 		searchParams.delete("formula");
-		searchParams.append("formula", encodeURI(formula));
+		searchParams.append("formula", encodeURI(textFormula));
 		navigator.clipboard
 			.writeText(
 				window.location.hostname +
@@ -26,67 +27,19 @@
 			);
 	}
 
-	function generateFormula(min: number) {
-		let result: string;
-		do {
-			result = grammar.flatten("#initial#");
-		} while (result.length < min || result.length > 200);
-		return result;
-	}
-
 	function randomizeFormula() {
-		formula = generateFormula(100);
+		textFormula = generateFormula(100);
+		drawingFunction = formulaToFunction(textFormula);
 	}
 
-	const grammar = createGrammar({
-		initial: ["#function#", "#number#"],
-		function: [
-			"#func-1#(#initial#)",
-			"#func-2#(#initial#, #initial#)",
-			"#func-3#(#initial#, #initial#, #initial#)",
-			"#initial# #operand# #initial#",
-			"(#initial#)",
-		],
-		"func-1": [
-			"Math.sin",
-			"Math.cos",
-			"Math.tan",
-			"Math.tanh",
-			"Math.round",
-			"Math.abs",
-		],
-		"func-2": ["Math.hypot", "Math.atan2"],
-		"func-3": ["Math.hypot"],
-		operand: [
-			"+",
-			"-",
-			"*",
-			"/",
-			"&",
-			"|",
-			"^",
-			"&&",
-			"||",
-			"<<",
-			">>",
-			"%",
-			">",
-			"<",
-			"==",
-			"!=",
-		],
-		number: ["x", "y", "t"],
-	});
-
-	let formula =
+	let textFormula =
 		"(hypot(x, y) > sin((x + y + t + random() * sin(x / 20) * 20) / 10) * 100) + (hypot(x, y) < sin((x + y + t + random() * sin(y / 30) * 30) / 10) * 100)";
-
+	const urlParams = new URLSearchParams(window.location.search);
+	let drawingFunction = urlParams.has("formula")
+		? formulaToFunction(decodeURI(urlParams.get("formula")!))
+		: formulaToFunction(textFormula);
 	let time: number = 0;
 	onMount(() => {
-		const urlParams = new URLSearchParams(window.location.search);
-		if (urlParams.has("formula")) {
-			formula = decodeURI(urlParams.get("formula")!);
-		}
 		(function loop() {
 			time++;
 			requestAnimationFrame(loop);
@@ -95,11 +48,15 @@
 </script>
 
 <main>
-	<FormulaVisualizator size={[256, 256]} textFormula={formula} {time} />
+	<FormulaVisualizator size={[256, 256]} {drawingFunction} {time} />
 	<div class={"right"}>
 		<textarea
-			bind:value={formula}
-			on:input={() => (time = 0)}
+			bind:value={textFormula}
+			on:input={() => {
+				time = 0;
+				drawingFunction = formulaToFunction(textFormula);
+				console.log(drawingFunction);
+			}}
 			cols="30"
 			rows="10"
 		/>
