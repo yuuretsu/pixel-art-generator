@@ -32,6 +32,7 @@
 		textFormula = generateFormula(100);
 		drawingFunction = formulaToFunction(textFormula);
 		data = generateData(256, 256, time, drawingFunction);
+		time = 0;
 	}
 
 	function step() {
