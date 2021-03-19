@@ -7,26 +7,6 @@
 
     type GenerationResult = ReturnType<typeof generateData>;
 
-    const sin = Math.sin;
-    const asin = Math.asin;
-    const cos = Math.cos;
-    const acos = Math.acos;
-    const tan = Math.tan;
-    const tanh = Math.tanh;
-    const atan = Math.atan;
-    const atan2 = Math.atan2;
-    const hypot = Math.hypot;
-    const round = Math.round;
-    const ceil = Math.ceil;
-    const floor = Math.floor;
-    const rand = Math.random;
-    const abs = Math.abs;
-    const sqrt = Math.sqrt;
-    const cbrt = Math.cbrt;
-
-    const avg = (...args: number[]) =>
-        args.reduce((a, b) => a + b) / args.length;
-
     function generateData(
         width: number,
         height: number,
@@ -103,6 +83,10 @@
     }
 
     function getDrawingFunction(textFormula: string): Formula {
+        Object.getOwnPropertyNames(Math).forEach((key) => {
+            textFormula = textFormula.replaceAll(key, `Math.${key}`);
+        });
+        textFormula = textFormula.replaceAll("Math.Math.", "Math.");
         return isValidFormula(textFormula)
             ? eval(`(x, y, t) => {
             let output = ${textFormula};

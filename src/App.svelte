@@ -79,7 +79,7 @@
 	});
 
 	let formula =
-		"(Math.hypot(x, y) > Math.sin((x + y + t + Math.random() * Math.sin(x / 20) * 20) / 10) * 100) + (Math.hypot(x, y) < Math.sin((x + y + t + Math.random() * Math.sin(y / 30) * 30) / 10) * 100)";
+		"(hypot(x, y) > sin((x + y + t + random() * sin(x / 20) * 20) / 10) * 100) + (hypot(x, y) < sin((x + y + t + random() * sin(y / 30) * 30) / 10) * 100)";
 
 	let time: number = 0;
 	onMount(() => {
@@ -97,7 +97,12 @@
 <main>
 	<FormulaVisualizator size={[256, 256]} textFormula={formula} {time} />
 	<div class={"right"}>
-		<textarea bind:value={formula} cols="30" rows="10" />
+		<textarea
+			bind:value={formula}
+			on:input={() => (time = 0)}
+			cols="30"
+			rows="10"
+		/>
 		<button on:click={randomizeFormula}>randomize</button>
 		<button on:click={copyToBuffer}>copy link</button>
 	</div>
