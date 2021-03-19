@@ -35,14 +35,12 @@ export function isValidFormula(formula: string) {
 
 export function formulaToFunction(formula: string): DrawingFunction {
     return isValidFormula(formula)
-        ? eval(`(x, y, t) => {
-            let output = ${translateFormula(formula)};
+        ? new Function('x', 'y', 't', `let output = ${translateFormula(formula)};
             switch (output) {
                 case Infinity: return Number.MAX_VALUE;
                 case -Infinity: return Number.MIN_VALUE;
                 case NaN: return 0;
                 default: return output;
-            }
-        }`)
+            }`) as DrawingFunction
         : (_x, _y, _t) => 0;
 }

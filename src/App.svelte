@@ -3,6 +3,7 @@
 	import { generateFormula } from "./formula-randomizer";
 	import FormulaVisualizator from "./FormulaVisualizator/index.svelte";
 	import { formulaToFunction } from "./stringTools";
+	import { generateData, normalizeData } from "./data-generator";
 
 	function copyToBuffer() {
 		const searchParams = new URLSearchParams(window.location.search);
@@ -30,6 +31,12 @@
 	function randomizeFormula() {
 		textFormula = generateFormula(100);
 		drawingFunction = formulaToFunction(textFormula);
+		data = generateData(256, 256, time, drawingFunction);
+	}
+
+	function step() {
+		time++;
+		data = generateData(256, 256, time, drawingFunction);
 	}
 
 	let textFormula =
@@ -39,29 +46,33 @@
 		? formulaToFunction(decodeURI(urlParams.get("formula")!))
 		: formulaToFunction(textFormula);
 	let time: number = 0;
-	onMount(() => {
-		(function loop() {
-			time++;
-			requestAnimationFrame(loop);
-		})();
-	});
+	let update = true;
+	let data = generateData(256, 256, time, drawingFunction);
+	(function loop() {
+		if (update) step();
+		requestAnimationFrame(loop);
+	})();
 </script>
 
 <main>
-	<FormulaVisualizator size={[256, 256]} {drawingFunction} {time} />
+	<FormulaVisualizator data={normalizeData(data)} />
 	<div class={"right"}>
 		<textarea
 			bind:value={textFormula}
 			on:input={() => {
 				time = 0;
 				drawingFunction = formulaToFunction(textFormula);
-				console.log(drawingFunction);
 			}}
-			cols="30"
-			rows="10"
 		/>
 		<button on:click={randomizeFormula}>randomize</button>
 		<button on:click={copyToBuffer}>copy link</button>
+		<button on:click={() => (update = update ? false : true)}>
+			{#if update}pause{:else}continue{/if}
+		</button>
+		<button on:click={step} disabled={update}>step</button>
+		<div>min: {data.min}</div>
+		<div>max: {data.max}</div>
+		<div>time: {time}</div>
 	</div>
 </main>
 
@@ -73,8 +84,11 @@
 
 	textarea {
 		display: block;
+		font-family: monospace;
+		font-size: 1.2em;
 		resize: none;
 		width: 100%;
+		height: 256px;
 		border-radius: 5px;
 		margin-bottom: 10px;
 	}
