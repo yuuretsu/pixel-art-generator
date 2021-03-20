@@ -35,8 +35,13 @@
 
 <style>
     canvas {
+        display: block;
         border-radius: 5px;
-        border: 1px solid #ccc;
-        max-width: 512px;
+        /* border: 1px solid #ccc; */
+        /* box-shadow: inset 0 0 0 1px #ccc; */
+        /* max-width: 512px;
+        min-width: 256px; */
+        max-width: 100%;
+        margin: auto;
     }
 </style>

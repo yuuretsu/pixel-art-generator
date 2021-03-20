@@ -27,16 +27,20 @@
 			);
 	}
 
+	function updateImage() {
+		data = generateData(256, 256, time, drawingFunction);
+	}
+
 	function randomizeFormula() {
 		textFormula = generateFormula(100);
 		drawingFunction = formulaToFunction(textFormula);
-		data = generateData(256, 256, time, drawingFunction);
+		updateImage();
 		time = 0;
 	}
 
 	function step() {
 		time++;
-		data = generateData(256, 256, time, drawingFunction);
+		updateImage();
 	}
 
 	const urlParams = new URLSearchParams(window.location.search);
@@ -46,90 +50,135 @@
 	let drawingFunction = formulaToFunction(textFormula);
 	let time = 0;
 	let update = true;
-	let data = generateData(256, 256, time, drawingFunction);
+	let data: {
+		data: number[][];
+		min: number;
+		max: number;
+		resultText: string;
+	};
+	updateImage();
 	(function loop() {
 		if (update) step();
 		requestAnimationFrame(loop);
 	})();
 </script>
 
-<main>
-	<FormulaVisualizator data={normalizeData(data)} />
-	<div class={"right"}>
-		<textarea
-			bind:value={textFormula}
-			on:input={() => {
-				time = 0;
-				drawingFunction = formulaToFunction(textFormula);
-			}}
-		/>
-		<button on:click={randomizeFormula}>randomize</button>
-		<button on:click={copyToBuffer}>copy link</button>
-		<button on:click={() => (update = update ? false : true)}>
-			{#if update}pause{:else}continue{/if}
-		</button>
-		<button
-			on:click={() => {
-				update = false;
-				step();
-			}}>step</button
-		>
-		<div>min: {data.min}</div>
-		<div>max: {data.max}</div>
-		<div>time: {time}</div>
+<main class="container">
+	<div class="column">
+		<FormulaVisualizator data={normalizeData(data)} />
+	</div>
+	<div class="column">
+		<div class="column__row">
+			<textarea
+				class="formula-input"
+				bind:value={textFormula}
+				on:input={() => {
+					time = 0;
+					drawingFunction = formulaToFunction(textFormula);
+				}}
+			/>
+		</div>
+		<div class="column__row">
+			<button on:click={randomizeFormula}>randomize</button>
+			<button on:click={copyToBuffer}>copy link</button>
+		</div>
+		<div class="column__row">
+			<button on:click={() => (update = update ? false : true)}>
+				{#if update}pause{:else}continue{/if}
+			</button>
+			<button
+				on:click={() => {
+					update = false;
+					step();
+				}}>step</button
+			>
+			<button
+				on:click={() => {
+					time = 0;
+					updateImage();
+				}}>clear time</button
+			>
+		</div>
+		<div class="column__row">
+			<div>min: {data.min}</div>
+			<div>max: {data.max}</div>
+			<div>time: {time}</div>
+		</div>
 	</div>
 </main>
 
 <style>
-	main {
-		display: flex;
-		justify-content: center;
-	}
-
+	button,
 	textarea {
-		display: block;
-		font-family: monospace;
-		font-size: 1.2em;
-		resize: none;
-		width: 100%;
-		height: 256px;
-		border-radius: 5px;
-		margin-bottom: 10px;
+		font-size: inherit;
 	}
-
 	button {
+		padding: 5px 10px;
 		border-radius: 5px;
+		border: 1px solid rgb(150, 150, 150);
+		background-color: #efefef;
 		cursor: pointer;
-		padding: 0.4em 1em;
+		margin: 0;
+		-webkit-user-select: none;
+		-moz-user-select: none;
 	}
-
 	button + button {
 		margin-left: 5px;
 	}
-
-	button:hover {
-		background-color: #e4e4e4;
-	}
-
 	button:focus {
 		outline: none;
-		border-color: #ccc;
 	}
-
-	.right {
-		width: 514px;
+	.container {
+		display: flex;
+		max-width: calc(512px + 512px + 10px);
+		margin: 0 auto;
+		padding: 10px;
+	}
+	.column {
+		width: 100%;
+		max-width: 512px;
+	}
+	.column + .column {
 		margin-left: 10px;
 	}
-
-	@media (max-width: 1100px) {
-		main {
-			display: block;
-			text-align: center;
+	.column__row + .column__row {
+		margin-top: 10px;
+	}
+	.formula-input {
+		display: block;
+		box-sizing: border-box;
+		background-color: #efefef;
+		width: 100%;
+		padding: 10px;
+		height: 256px;
+		resize: none;
+		border-radius: 5px;
+		border: none;
+		box-shadow: inset 0 0 0 1px rgb(150, 150, 150);
+		transition-duration: 0.2s;
+	}
+	.formula-input:focus {
+		box-shadow: inset 0 0 0 3px rgb(150, 150, 150);
+		outline: none;
+	}
+	@media (max-width: 1054px) {
+		button {
+			padding: 10px 20px;
 		}
-		.right {
-			margin: auto;
+		.container {
+			max-width: 512px;
+			display: block;
+		}
+		.column {
+			width: 100%;
+			min-width: auto;
+		}
+		.column + .column {
+			margin-left: 0;
 			margin-top: 10px;
-			width: 514px;
+		}
+		.formula-input {
+			height: 128px;
 		}
 	}
 </style>
