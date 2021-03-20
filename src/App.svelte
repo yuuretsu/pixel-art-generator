@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import { generateFormula } from "./formula-randomizer";
 	import FormulaVisualizator from "./FormulaVisualizator/index.svelte";
 	import { formulaToFunction } from "./stringTools";
@@ -46,7 +45,7 @@
 	let drawingFunction = urlParams.has("formula")
 		? formulaToFunction(decodeURI(urlParams.get("formula")!))
 		: formulaToFunction(textFormula);
-	let time: number = 0;
+	let time = 0;
 	let update = true;
 	let data = generateData(256, 256, time, drawingFunction);
 	(function loop() {
@@ -70,7 +69,12 @@
 		<button on:click={() => (update = update ? false : true)}>
 			{#if update}pause{:else}continue{/if}
 		</button>
-		<button on:click={step} disabled={update}>step</button>
+		<button
+			on:click={() => {
+				update = false;
+				step();
+			}}>step</button
+		>
 		<div>min: {data.min}</div>
 		<div>max: {data.max}</div>
 		<div>time: {time}</div>
