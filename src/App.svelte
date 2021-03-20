@@ -39,12 +39,11 @@
 		data = generateData(256, 256, time, drawingFunction);
 	}
 
-	let textFormula =
-		"(hypot(x, y) > sin((x + y + t + random() * sin(x / 20) * 20) / 10) * 100) + (hypot(x, y) < sin((x + y + t + random() * sin(y / 30) * 30) / 10) * 100)";
 	const urlParams = new URLSearchParams(window.location.search);
-	let drawingFunction = urlParams.has("formula")
-		? formulaToFunction(decodeURI(urlParams.get("formula")!))
-		: formulaToFunction(textFormula);
+	let textFormula = urlParams.has("formula")
+		? decodeURI(urlParams.get("formula")!)
+		: "(hypot(x, y) > sin((x + y + t + random() * sin(x / 20) * 20) / 10) * 100) + (hypot(x, y) < sin((x + y + t + random() * sin(y / 30) * 30) / 10) * 100)";
+	let drawingFunction = formulaToFunction(textFormula);
 	let time = 0;
 	let update = true;
 	let data = generateData(256, 256, time, drawingFunction);
