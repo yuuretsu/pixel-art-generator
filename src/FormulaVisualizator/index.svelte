@@ -18,8 +18,8 @@
     let canvas: HTMLCanvasElement;
     let ctx: CanvasRenderingContext2D;
     onMount(() => {
-        canvas.width = data.length * 2;
-        canvas.height = data[0].length * 2;
+        canvas.width = 512;
+        canvas.height = 512;
         ctx = canvas.getContext("2d");
         ctx.imageSmoothingEnabled = false;
     });
@@ -37,10 +37,6 @@
     canvas {
         display: block;
         border-radius: 5px;
-        /* border: 1px solid #ccc; */
-        /* box-shadow: inset 0 0 0 1px #ccc; */
-        /* max-width: 512px;
-        min-width: 256px; */
         max-width: 100%;
         margin: auto;
     }

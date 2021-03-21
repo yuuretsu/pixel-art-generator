@@ -3,6 +3,7 @@
 	import FormulaVisualizator from "./FormulaVisualizator/index.svelte";
 	import { formulaToFunction } from "./stringTools";
 	import { generateData, normalizeData } from "./data-generator";
+	import { randChoice, randInt } from "./FormulaVisualizator/math-functions";
 
 	function copyToBuffer() {
 		const searchParams = new URLSearchParams(window.location.search);
@@ -108,6 +109,7 @@
 </main>
 
 <style>
+	@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
 	button,
 	textarea {
 		font-size: inherit;
@@ -146,6 +148,7 @@
 	}
 	.formula-input {
 		display: block;
+		font-family: "IBM Plex Mono", monospace;
 		box-sizing: border-box;
 		background-color: #efefef;
 		width: 100%;

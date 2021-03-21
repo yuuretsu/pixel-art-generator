@@ -38,5 +38,5 @@ const grammar = createGrammar({
         "==",
         "!=",
     ],
-    number: ["x", "y", "t"],
+    number: ["x", "y", "t", "random()", '127', '-127'],
 });
