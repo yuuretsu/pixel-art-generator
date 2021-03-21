@@ -3,7 +3,6 @@
 	import FormulaVisualizator from "./FormulaVisualizator/index.svelte";
 	import { formulaToFunction } from "./stringTools";
 	import { generateData, normalizeData } from "./data-generator";
-	import { randChoice, randInt } from "./FormulaVisualizator/math-functions";
 
 	function copyToBuffer() {
 		const searchParams = new URLSearchParams(window.location.search);
@@ -29,7 +28,12 @@
 	}
 
 	function updateImage() {
-		data = generateData(256, 256, time, drawingFunction);
+		data = generateData(
+			dataSize || 256,
+			dataSize || 256,
+			time,
+			drawingFunction
+		);
 	}
 
 	function randomizeFormula() {
@@ -57,6 +61,7 @@
 		max: number;
 		resultText: string;
 	};
+	let dataSize = 256;
 	updateImage();
 	(function loop() {
 		if (update) step();
@@ -78,6 +83,10 @@
 					drawingFunction = formulaToFunction(textFormula);
 				}}
 			/>
+		</div>
+		<div class="column__row">
+			Image size:
+			<input type="number" bind:value={dataSize} />
 		</div>
 		<div class="column__row">
 			<button on:click={randomizeFormula}>randomize</button>
@@ -129,6 +138,9 @@
 	}
 	button:focus {
 		outline: none;
+	}
+	input[type="number"] {
+		width: 50px;
 	}
 	.container {
 		display: flex;
