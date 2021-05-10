@@ -1,5 +1,5 @@
 # Pixel art generator
 
-Demo: **[here](https://yuuretsu.github.io/evolution-of-artifical-life/)**
+Demo: **[here](https://yuuretsu.github.io/pixel-art-generator/)**
 
 ![img](./img/preview.png)
