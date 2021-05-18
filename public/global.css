@@ -1,8 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,700&display=swap');
 
 body {
-	font-family: 'IBM Plex Sans', sans-serif;
-	padding: 0;
+	color: #333;
 	margin: 0;
-	font-size: 16px;
+	padding: 0;
+	font-family: 'Space Mono', monospace;
+}
+
+/* * {
+	outline: 1px solid rgba(0, 0, 0, 0.1);
+} */
+
+::-moz-selection {
+  color: white;
+  background: #333;
+}
+
+::selection {
+  color: white;
+  background: #333;
 }

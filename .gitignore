@@ -1,6 +1,5 @@
 /node_modules/
-/public/bundle.css
-/public/bundle.js
-/public/bundle.js.map
+/public/build
+package-lock.json
 
 .DS_Store

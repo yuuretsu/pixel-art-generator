@@ -1,10 +1,10 @@
 {
   "name": "pixel-art-generator",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public",
+    "start": "sirv public --no-clear",
     "validate": "svelte-check"
   },
   "devDependencies": {
@@ -23,11 +23,11 @@
     "svelte": "^3.0.0",
     "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.0.0",
-    "tracery-grammar": "^2.7.4",
     "tslib": "^2.0.0",
     "typescript": "^4.0.0"
   },
   "dependencies": {
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "tracery-grammar": "^2.7.4"
   }
 }
