@@ -15,6 +15,7 @@
     user-select: none;
     width: 100%;
     -webkit-tap-highlight-color: transparent;
+    margin: 0;
   }
   button:active {
     color: white;
