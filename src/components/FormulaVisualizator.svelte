@@ -17,7 +17,7 @@
   image.width = 256;
   image.height = 256;
   const ictx = image.getContext("2d")!;
-  ictx.fillStyle = "white";
+  ictx.fillStyle = "#333";
   ictx.fillRect(0, 0, 256, 256);
   const data = ictx.getImageData(0, 0, image.width, image.height);
 
@@ -27,8 +27,6 @@
   });
 
   afterUpdate(() => {
-    ctx = canvas.getContext("2d")!;
-    ctx.imageSmoothingEnabled = false;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     min = Infinity;
     max = -Infinity;
@@ -49,7 +47,6 @@
       (v, i) => (data.data[i * 4 + 3] = ((v - min) / (max - min)) * 255)
     );
     ictx.putImageData(data, 0, 0);
-    ctx.imageSmoothingEnabled = false;
     ctx.drawImage(image, 0, 0, 512, 512);
   });
 </script>
@@ -61,7 +58,7 @@
     box-sizing: border-box;
     display: block;
     width: 100%;
-    background-color: #333;
+    background-color: transparent;
     border: 2px solid #333;
     image-rendering: pixelated;
   }
