@@ -19,7 +19,7 @@
       clearInterval(interval);
       interval = null;
     }
-    if (!paused) interval = setInterval(() => time++);
+    if (!paused) interval = setInterval(() => time++, 1000 / 30);
   });
 </script>
 

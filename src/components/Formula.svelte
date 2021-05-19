@@ -21,4 +21,13 @@
   div:not(:last-child) {
     border-bottom: 2px solid #333;
   }
+  div:hover::-moz-selection {
+    color: #333;
+    background: white;
+  }
+
+  div:hover::selection {
+    color: #333;
+    background: white;
+  }
 </style>
