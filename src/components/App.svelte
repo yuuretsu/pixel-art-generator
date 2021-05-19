@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormulaChecker from "./FormulaChecker.svelte";
+  import FormulaValidator from "./FormulaValidator.svelte";
   import Controls from "./Controls.svelte";
   import { afterUpdate } from "svelte";
 
@@ -25,7 +25,7 @@
 
 <main>
   <div class="image-wrapper">
-    <FormulaChecker bind:formula bind:time bind:min bind:max />
+    <FormulaValidator bind:formula bind:time bind:min bind:max />
   </div>
   <div class="controls-wrapper">
     <Controls bind:formula bind:paused bind:time bind:min bind:max />

@@ -1,7 +1,6 @@
 <script lang="ts">
-  import FormulaVisualizator from "./FormulaVisualizator.svelte";
+  import FormulaVisualizer from "./FormulaVisualizer.svelte";
   import { parseScript } from "esprima";
-  import { afterUpdate } from "svelte";
 
   export let formula: string;
   export let time: number;
@@ -72,7 +71,7 @@
 </script>
 
 {#if typeof result === "function"}
-  <FormulaVisualizator bind:drawingFn={result} bind:time bind:min bind:max />
+  <FormulaVisualizer bind:drawingFn={result} bind:time bind:min bind:max />
 {:else}
   <div class="outer">
     <div class="inner">
