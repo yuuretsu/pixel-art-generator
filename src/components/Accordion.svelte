@@ -3,9 +3,9 @@
   export let opened = true;
 </script>
 
-<div class="head" on:click={() => (opened = !opened)}>
+<button class="head" on:click={() => (opened = !opened)}>
   <span>{label}</span><span>{opened ? "-" : "+"}</span>
-</div>
+</button>
 {#if opened}
   <div class="body"><slot /></div>
 {/if}
@@ -21,6 +21,8 @@
     padding: 5px 10px;
     user-select: none;
     cursor: pointer;
+    width: 100%;
+    border: none;
   }
   .body {
     font-weight: bold;
