@@ -1,10 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,700&display=swap");
+
+* {
+  font-size: inherit;
+  font-family: inherit;
+}
 
 body {
-	color: #333;
-	margin: 0;
-	padding: 0;
-	font-family: 'Space Mono', monospace;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  font-family: "Space Mono", monospace;
 }
 
 /* * {
